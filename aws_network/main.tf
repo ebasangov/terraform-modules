@@ -14,6 +14,11 @@ data "aws_availability_zones" "available" {}
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
 
+  # Reqired for EKS. Enable\disable DNS support in the vpc
+  enable_dns_support = true
+
+  # Reqired for EKS. Enable\disable DNS hostnames in the vpc
+  enable_dns_hostnames = true
   tags = {
     Name = "${var.env}-vpc"
   }
