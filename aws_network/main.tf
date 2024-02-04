@@ -48,6 +48,9 @@ resource "aws_subnet" "public_subnets" {
 
   tags = {
     Name = "${var.env}-public-${count.index + 1}"
+    # required for EKS cluster
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/elb" = 1
   }
 }
 
@@ -56,7 +59,7 @@ resource "aws_route_table" "public_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.internet_gateway.id
+    nat_gateway_id = aws_internet_gateway.internet_gateway.id
   }
 
   tags = {
@@ -106,6 +109,8 @@ resource "aws_subnet" "private_subnets" {
 
   tags = {
     Name = "${var.env}-private-${count.index + 1}"
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 
@@ -114,7 +119,7 @@ resource "aws_route_table" "private_subnets" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat[count.index].id
+    nat_gateway_id = aws_nat_gateway.nat[count.index].id
   }
 
   tags = {
