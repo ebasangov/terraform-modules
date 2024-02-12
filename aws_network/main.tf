@@ -92,7 +92,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id         = element(aws_subnet.public_subnets[*].id, count.index)
 
   tags = {
-    Name = "${var.env}-nat-gw-${count.index + 1}"
+    Name = "nat-gw-${var.env}-${count.index + 1}"
   }
 
   depends_on = [aws_internet_gateway.internet_gateway]
