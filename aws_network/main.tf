@@ -20,7 +20,7 @@ resource "aws_vpc" "main" {
   # Reqired for EKS. Enable\disable DNS hostnames in the vpc
   enable_dns_hostnames = true
   tags = {
-    Name = "${var.env}-vpc"
+    Name = "${var.env}-main"
   }
 }
 
